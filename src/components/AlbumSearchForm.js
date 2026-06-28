@@ -11,7 +11,10 @@ export default function AlbumSearchForm({ searchCallback, isWaiting }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const encodedQuery = encodeURIComponent(queryText);
+    const trimmedQuery = queryText.trim();
+    if (!trimmedQuery) return;
+
+    const encodedQuery = encodeURIComponent(trimmedQuery);
     searchCallback(encodedQuery);
   };
 
@@ -20,14 +23,14 @@ export default function AlbumSearchForm({ searchCallback, isWaiting }) {
       <form className="form-inline" onSubmit={handleSubmit}>
         <div className="form-group mb-2">
           <label htmlFor="searchQuery" className="mb-2">Who do you want to hear?</label>
-          <input type="text" className="form-control" placeholder="Search for an album"
+          <input id="searchQuery" type="text" className="form-control" placeholder="Search for an album"
             value={queryText} onChange={handleChange} />
         </div>
 
         {isWaiting ? (
           <FontAwesomeIcon icon={faSpinner} spin size="lg" aria-label="Loading..." aria-hidden="false" />
         ) : (
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary" disabled={!queryText.trim()}>
             <FontAwesomeIcon icon={faMusic} /> Search!
           </button>
         )}

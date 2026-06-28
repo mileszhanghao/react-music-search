@@ -27,7 +27,7 @@ export default function TrackList({ setAlertMessage }) {
         if (data.resultCount <= 1) {
           throw new Error('No tracks found for album.');
         }
-        setTrackData(data.results.slice(1)); // Assuming first result is album info
+        setTrackData(data.results.slice(1));
       })
       .catch(error => {
         setAlertMessage(error.message);
@@ -49,9 +49,9 @@ export default function TrackList({ setAlertMessage }) {
     }
   };
 
-  trackData.sort((a, b) => a.trackNumber - b.trackNumber);
+  const sortedTracks = [...trackData].sort((a, b) => a.trackNumber - b.trackNumber);
 
-  const trackElemArray = trackData.map((track) => (
+  const trackElemArray = sortedTracks.map((track) => (
     <div key={track.trackId} onClick={() => togglePlayingPreview(track.previewUrl)} role="button" className="track-record">
       <p className="track-name">{track.trackName}</p>
       <p className="track-artist">({track.artistName})</p>
